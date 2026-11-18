@@ -4,7 +4,7 @@ import { STATUSES } from "../constants";
 const EMPTY_FORM = { title: "", description: "", status: "Todo" };
 
 const inputClass =
-  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 shadow-sm placeholder:text-slate-400 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 disabled:opacity-60";
+  "w-full rounded-lg border bg-field px-3 py-2 text-sm text-white placeholder:text-muted/70 focus:border-todo focus:outline-none focus:ring-2 focus:ring-todo/20 disabled:opacity-60";
 
 export default function TaskForm({ onCreate }) {
   const [form, setForm] = useState(EMPTY_FORM);
@@ -49,13 +49,13 @@ export default function TaskForm({ onCreate }) {
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="space-y-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
+      className="space-y-4 rounded-xl bg-card p-5"
     >
-      <h2 className="text-base font-semibold text-slate-900">New task</h2>
+      <h2 className="text-base font-semibold text-white">New task</h2>
 
       <div className="space-y-1">
-        <label htmlFor="title" className="text-sm font-medium text-slate-700">
-          Title <span className="text-red-500">*</span>
+        <label htmlFor="title" className="text-sm font-medium text-muted">
+          Title <span className="text-red-400">*</span>
         </label>
         <input
           id="title"
@@ -67,17 +67,17 @@ export default function TaskForm({ onCreate }) {
           disabled={submitting}
           aria-invalid={Boolean(errors.title)}
           aria-describedby={errors.title ? "title-error" : undefined}
-          className={`${inputClass} ${errors.title ? "border-red-400" : ""}`}
+          className={`${inputClass} ${errors.title ? "border-red-400" : "border-transparent"}`}
         />
         {errors.title && (
-          <p id="title-error" className="text-sm text-red-600">
+          <p id="title-error" className="text-sm text-red-400">
             {errors.title}
           </p>
         )}
       </div>
 
       <div className="space-y-1">
-        <label htmlFor="description" className="text-sm font-medium text-slate-700">
+        <label htmlFor="description" className="text-sm font-medium text-muted">
           Description
         </label>
         <textarea
@@ -87,13 +87,13 @@ export default function TaskForm({ onCreate }) {
           onChange={setField("description")}
           placeholder="Optional details"
           disabled={submitting}
-          className={inputClass}
+          className={`${inputClass} border-transparent`}
         />
-        {errors.description && <p className="text-sm text-red-600">{errors.description}</p>}
+        {errors.description && <p className="text-sm text-red-400">{errors.description}</p>}
       </div>
 
       <div className="space-y-1">
-        <label htmlFor="status" className="text-sm font-medium text-slate-700">
+        <label htmlFor="status" className="text-sm font-medium text-muted">
           Status
         </label>
         <select
@@ -101,7 +101,7 @@ export default function TaskForm({ onCreate }) {
           value={form.status}
           onChange={setField("status")}
           disabled={submitting}
-          className={inputClass}
+          className={`${inputClass} border-transparent`}
         >
           {STATUSES.map((s) => (
             <option key={s} value={s}>
@@ -109,11 +109,11 @@ export default function TaskForm({ onCreate }) {
             </option>
           ))}
         </select>
-        {errors.status && <p className="text-sm text-red-600">{errors.status}</p>}
+        {errors.status && <p className="text-sm text-red-400">{errors.status}</p>}
       </div>
 
       {formError && !Object.values(errors).some(Boolean) && (
-        <p role="alert" className="text-sm text-red-600">
+        <p role="alert" className="text-sm text-red-400">
           {formError}
         </p>
       )}
@@ -121,7 +121,7 @@ export default function TaskForm({ onCreate }) {
       <button
         type="submit"
         disabled={submitting}
-        className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-full rounded-lg bg-todo px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-todo/40 disabled:cursor-not-allowed disabled:opacity-60"
       >
         {submitting ? "Adding…" : "Add task"}
       </button>

@@ -25,24 +25,25 @@ export default function TaskItem({ task, onUpdate, onDelete }) {
 
   return (
     <li
-      className={`rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition ${busy ? "opacity-60" : ""}`}
+      className={`relative overflow-hidden rounded-xl bg-card p-4 pl-5 transition ${busy ? "opacity-60" : ""}`}
     >
+      <span className={`absolute inset-y-0 left-0 w-1 ${STATUS_STYLES[task.status].bar}`} aria-hidden="true" />
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <h3
-              className={`break-words font-medium ${task.status === "Done" ? "text-slate-500 line-through" : "text-slate-900"}`}
+              className={`break-words font-medium ${task.status === "Done" ? "text-muted line-through" : "text-white"}`}
             >
               {task.title}
             </h3>
             <span
-              className={`rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${STATUS_STYLES[task.status]}`}
+              className={`rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLES[task.status].badge}`}
             >
               {task.status}
             </span>
           </div>
           {task.description && (
-            <p className="mt-1 whitespace-pre-line break-words text-sm text-slate-600">
+            <p className="mt-1 whitespace-pre-line break-words text-sm text-muted">
               {task.description}
             </p>
           )}
@@ -54,7 +55,7 @@ export default function TaskItem({ task, onUpdate, onDelete }) {
             onChange={handleStatusChange}
             disabled={busy}
             aria-label={`Status for ${task.title}`}
-            className="rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm text-slate-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+            className="rounded-lg border border-transparent bg-field px-2 py-1.5 text-sm text-white focus:border-todo focus:outline-none focus:ring-2 focus:ring-todo/20"
           >
             {STATUSES.map((s) => (
               <option key={s} value={s}>
@@ -68,7 +69,7 @@ export default function TaskItem({ task, onUpdate, onDelete }) {
             disabled={busy}
             aria-label={`Delete ${task.title}`}
             title="Delete task"
-            className="rounded-lg p-2 text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-red-500/30 disabled:cursor-not-allowed"
+            className="rounded-lg p-2 text-muted transition hover:bg-red-500/10 hover:text-red-400 focus:outline-none focus:ring-2 focus:ring-red-500/30 disabled:cursor-not-allowed"
           >
             <svg viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5" aria-hidden="true">
               <path
@@ -81,7 +82,7 @@ export default function TaskItem({ task, onUpdate, onDelete }) {
         </div>
       </div>
       {error && (
-        <p role="alert" className="mt-2 text-sm text-red-600">
+        <p role="alert" className="mt-2 text-sm text-red-400">
           {error}
         </p>
       )}

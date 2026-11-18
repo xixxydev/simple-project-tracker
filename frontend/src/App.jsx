@@ -12,12 +12,12 @@ export default function App() {
   }));
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="border-b border-slate-200 bg-white">
+    <div className="min-h-screen bg-surface font-sans text-white antialiased">
+      <header className="border-b border-line">
         <div className="mx-auto flex max-w-5xl flex-col gap-2 px-4 py-5 sm:flex-row sm:items-center sm:justify-between">
-          <h1 className="text-xl font-bold text-slate-900">Simple Project Tracker</h1>
+          <h1 className="text-xl font-bold text-white">Simple Project Tracker</h1>
           {!loading && !error && (
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-muted">
               {counts.map(({ status, count }) => `${count} ${status}`).join(" · ")}
             </p>
           )}

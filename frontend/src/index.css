@@ -1,1 +1,25 @@
 @import "tailwindcss";
+@import "@fontsource-variable/manrope";
+
+@theme {
+  --font-sans: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-surface: #161619;
+  --color-card: #232327;
+  --color-card-hover: #2a2a2f;
+  --color-field: #1b1b1f;
+  --color-line: #33333a;
+  --color-muted: #8b8b96;
+
+  --color-todo: #3a6ff0;
+  --color-progress: #f26a3d;
+  --color-done: #4fdfdc;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-surface);
+}
