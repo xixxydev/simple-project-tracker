@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "corsheaders",
+    "tasks",
 ]
 
 MIDDLEWARE = [
@@ -94,3 +95,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CORS: allow the frontend dev server to call the API.
 CORS_ALLOWED_ORIGINS = env_list("CORS_ALLOWED_ORIGINS")
+
+# Django REST Framework: open API (no auth required for this project).
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [],
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
+}

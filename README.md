@@ -17,12 +17,35 @@ A simple full-stack task tracker for creating, viewing, updating, and deleting t
 
 ## API Endpoints
 
-| Method | Endpoint      | Description         |
-| ------ | ------------- | ------------------- |
-| GET    | `/tasks`      | List all tasks      |
-| POST   | `/tasks`      | Create a new task   |
-| PUT    | `/tasks/<id>` | Update a task       |
-| DELETE | `/tasks/<id>` | Delete a task by ID |
+| Method | Endpoint          | Description         |
+| ------ | ----------------- | ------------------- |
+| GET    | `/api/tasks`      | List all tasks      |
+| POST   | `/api/tasks`      | Create a new task   |
+| PUT    | `/api/tasks/<id>` | Update a task       |
+| DELETE | `/api/tasks/<id>` | Delete a task by ID |
+
+A trailing slash is optional (`/api/tasks` and `/api/tasks/` both work).
+
+**Task payload** (POST / PUT):
+
+```json
+{ "title": "String", "description": "String", "status": "Todo" }
+```
+
+- `title`: required, cannot be empty
+- `description`: optional
+- `status`: one of `Todo`, `In Progress`, `Done` (defaults to `Todo`)
+- `PUT` accepts partial updates, e.g. `{ "status": "Done" }`
+
+Invalid input returns `400` with field errors, e.g. `{"status": ["Status must be one of: Todo, In Progress, Done."]}`.
+
+Example:
+
+```bash
+curl -X POST http://localhost:8000/api/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Write docs", "description": "README", "status": "Todo"}'
+```
 
 ## Getting Started
 
@@ -39,7 +62,7 @@ cp .env.example .env
 docker compose up --build
 ```
 
-- API: http://localhost:8000
+- API: http://localhost:8000/api/tasks
 - PostgreSQL: `localhost:5432`
 
 Database tables are created automatically on startup (Django migrations run before the server starts). Code changes in `backend/` reload automatically.
@@ -50,6 +73,7 @@ Useful commands:
 docker compose down        # stop
 docker compose down -v     # stop and delete the database volume
 docker compose exec backend python manage.py <command>
+docker compose exec backend python manage.py test   # run backend tests
 ```
 
 ### Configuration
@@ -76,6 +100,7 @@ python manage.py runserver
 ```
 backend/             Django REST Framework API
   config/            Django settings and URLs
+  tasks/             Task model, serializer, views, URLs, tests
   Dockerfile
   entrypoint.sh      Runs migrations, then starts the server
   requirements.txt
