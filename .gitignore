@@ -18,3 +18,6 @@ dist/
 
 # Local AI assistant notes
 CLAUDE.md
+
+# Browser automation artifacts
+.playwright-mcp/

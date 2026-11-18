@@ -6,7 +6,7 @@ A simple full-stack task tracker for creating, viewing, updating, and deleting t
 
 - **Backend:** Django REST Framework
 - **Database:** PostgreSQL
-- **Frontend:** React + Tailwind CSS
+- **Frontend:** React (Vite) + Tailwind CSS
 
 ## Features
 
@@ -62,10 +62,11 @@ cp .env.example .env
 docker compose up --build
 ```
 
+- App: http://localhost:5173
 - API: http://localhost:8000/api/tasks
 - PostgreSQL: `localhost:5432`
 
-Database tables are created automatically on startup (Django migrations run before the server starts). Code changes in `backend/` reload automatically.
+Database tables are created automatically on startup (Django migrations run before the server starts). Code changes in `backend/` and `frontend/` reload automatically.
 
 Useful commands:
 
@@ -74,13 +75,16 @@ docker compose down        # stop
 docker compose down -v     # stop and delete the database volume
 docker compose exec backend python manage.py <command>
 docker compose exec backend python manage.py test   # run backend tests
+docker compose exec frontend npm test               # run frontend tests
 ```
 
 ### Configuration
 
-All settings, including database credentials, come from environment variables in `.env` (see `.env.example`). `.env` is git-ignored and never committed. If port `8000` or `5432` is already in use, change `BACKEND_PORT` or `POSTGRES_PORT` in `.env`.
+All settings, including database credentials, come from environment variables in `.env` (see `.env.example`). `.env` is git-ignored and never committed. If port `5173`, `8000` or `5432` is already in use, change `FRONTEND_PORT`, `BACKEND_PORT` or `POSTGRES_PORT` in `.env`. When changing `FRONTEND_PORT`, update `CORS_ALLOWED_ORIGINS` to match; when changing `BACKEND_PORT`, update `VITE_API_URL`.
 
-### Run the backend without Docker (optional)
+### Run without Docker (optional)
+
+**Backend**
 
 Requires Python 3.10+. PostgreSQL still runs in Docker:
 
@@ -95,6 +99,15 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+**Frontend** (requires Node.js 20.19+ or 22.12+):
+
+```bash
+cd frontend
+npm install
+npm run dev     # http://localhost:5173
+npm test
+```
+
 ## Project Structure
 
 ```
@@ -104,6 +117,10 @@ backend/             Django REST Framework API
   Dockerfile
   entrypoint.sh      Runs migrations, then starts the server
   requirements.txt
-docker-compose.yml   PostgreSQL + backend services
+frontend/            React + Tailwind app (Vite)
+  src/api.js         HTTP calls to the backend (fetch)
+  src/hooks/         useTasks: task state, synced after each API call
+  src/components/    TaskForm, TaskList, TaskItem
+docker-compose.yml   PostgreSQL + backend + frontend services
 .env.example         Template for environment variables
 ```

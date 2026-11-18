@@ -29,5 +29,17 @@ services:
       db:
         condition: service_healthy
 
+  frontend:
+    build: ./frontend
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8000/api}
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules # keep the container's installed packages
+    depends_on:
+      - backend
+
 volumes:
   postgres_data:
